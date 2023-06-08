@@ -1,45 +1,37 @@
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
-
-const galleryEl = document.querySelector('.gallery');
-
-function createGalleryItems (galleryItems) {
-    let galleryElements = galleryItems.map(item => {
-       let galleryItem = document.createElement('li');
-       galleryItem.classList.add('gallery__item');
-
-       let galleryLink = document.createElement('a');
-       galleryLink.classList.add('gallery__link');
-       galleryLink.href = item.original;
-
-       let galleryImg = document.createElement('img');
-       galleryImg.classList.add('gallery__image');
-       galleryImg.src = item.preview;
-       galleryImg.dataset.source = item.original;
-       galleryImg.alt = item.description;
-       galleryLink.appendChild(galleryImg);
-       galleryItem.appendChild(galleryLink);
-
-       return galleryItem;
-    });
-    galleryEl.append(...galleryElements);    
+console.log(galleryItems);
+const ulEl = document.querySelector(".gallery");
+function createGalleryMarkUp(items){
+   return items.map((item)=>
+   `<li class="gallery__item">
+   <a class="gallery__link" 
+   href ="${item.original}">
+   <img
+   class="gallery__image" 
+   src="${item.preview}"
+   data-source="${item.original}"
+   alt="${item.description}"/></a></li>`).join("");
 }
-createGalleryItems(galleryItems);
-let instance;
-function onGalleryClick(event) {
+const addGalleryMarkUp = createGalleryMarkUp(galleryItems);
+ulEl.innerHTML = addGalleryMarkUp;
+ulEl.addEventListener("click",onGalleryItemClick);
+function onGalleryItemClick(event){
     event.preventDefault();
-    if (event.target.nodeName !== "IMG") {
+    if(event.target.nodeName !== "IMG"){
         return;
-      }  
-    instance = basicLightbox.create(`
-      <img src='${event.target.dataset.source}' width="800" height="600">
-   `)
-    instance.show()
-};
-galleryEl.addEventListener('click', onGalleryClick);
-function onKeyPress(event) {
-    if (event.key === 'Escape') {
-      instance.close();
     }
-  }  
-  window.addEventListener('keydown', onKeyPress);
+     const instance = basicLightbox.create(`<img src=
+      "${event.target.dataset.source}"
+       width="800" height ="600"/>`);
+      instance.show();
+
+ulEl.addEventListener("keydown",(event) =>{
+   if(event.code === "Escape"){
+    document.removeEventListener("keydown",event);
+    instance.close();
+   }  
+ });
+ }
+
+
