@@ -25,13 +25,6 @@ function onGalleryItemClick(event){
       "${event.target.dataset.source}"
        width="800" height ="600"/>`);
       instance.show();
-
-ulEl.addEventListener("keydown",(event) =>{
-   if(event.code === "Escape"){
-    document.removeEventListener("keydown",event);
-    instance.close();
-   }  
- });
  }
 
 
